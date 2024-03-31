@@ -7,26 +7,24 @@ from handlers import user_handlers, other_handlers
 from keyboards.main_menu import set_main_menu
 from logger.logger import setup_logger
 from services.services import sigint_handler, sigterm_handler
-from database.db import setup_database, create_tables, close_database
+from database.db import get_connection, create_tables
 
 
 def init_db():
     try:
-        global db_pool
-        db_pool = setup_database()
-        create_tables(db_pool)
-        logging.info("Database tables created or verified.")
+        db_connection = get_connection()
+        create_tables(db_connection)
+        logging.info('Database initialized successfully.')
     except Exception as e:
         logging.error(f"Error initializing database: {e}")
-        raise
 
 
 async def main():
     try:
         config = load_config()
-        logging.info("Configuration loaded successfully")
+        logging.info("Configuration loaded successfully.")
     except Exception as e:
-        logging.error(f"Error loading configuration: {e}")
+        logging.error(f"Error loading configuration: {e}.")
         return
 
     bot = Bot(token=config.tg_bot.token)
@@ -43,5 +41,13 @@ async def main():
 
 if __name__ == "__main__":
     setup_logger()
+
     init_db()
-    asyncio.run(main())
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    loop.run_until_complete(main())
+
+    loop.add_signal_handler(signal.SIGTERM, sigterm_handler())
+    loop.add_signal_handler(signal.SIGINT, sigint_handler())
