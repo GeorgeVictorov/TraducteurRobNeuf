@@ -4,13 +4,14 @@ import psycopg
 import logging
 from datetime import datetime
 from services.services import hash_file_data
-from database.db import get_connection
+from database.db import Database
 
 STATS = 'stats_data'
 
 
 def get_stats():
-    conn = get_connection()
+    database = Database()
+    conn = database.get_connection()
     try:
         with conn.cursor() as cur:
             cur.execute(f'select * from {STATS}')
