@@ -2,7 +2,6 @@
 
 «Neuf» - from French language may mean «nine» or «new» - it's up to you to decide.
 
-
 ## Introduction
 
 Welcome to our multi-language translator bot!
@@ -29,6 +28,8 @@ and [psycopg](https://github.com/psycopg/psycopg) for its core functionalities.
 
 Users configurations are stored in [PostgreSQL database](https://www.postgresql.org),
 with user IDs hashed using SHA256 to ensure they cannot be retrieved again.
+
+## Check out Traducteur Rob Neuf [here](https://t.me/TraducteurRobNeufBot).
 
 ## Project structure
 
