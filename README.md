@@ -55,7 +55,6 @@ TraducteurRobNeuf
 │   └── logger.py
 ├── services
 │   └── services.py
-├── .env
 ├── .env.example
 ├── .gitignore
 ├── main.py
