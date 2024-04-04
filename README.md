@@ -15,12 +15,15 @@ We support translation between 9 languages and even have an auto-detect feature 
 🇨🇳 Chinese
 🇬🇧 English
 🇮🇳 Hindi
+
 🇪🇸 Spanish
 🇫🇷 French
 🇸🇦 Arabic
+
 🇧🇩 Bengali
 🇵🇹 Portuguese
 🇷🇺 Russian
+
 🌐 Auto Detect
 
 The project employs [aiogram](https://github.com/aiogram/aiogram), [googletrans](https://github.com/ssut/py-googletrans)
