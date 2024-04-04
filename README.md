@@ -31,6 +31,10 @@ with user IDs hashed using SHA256 to ensure they cannot be retrieved again.
 
 ## Check out Traducteur Rob Neuf [here](https://t.me/TraducteurRobNeufBot).
 
+## Overview
+
+![](https://github.com/GeorgeVictorov/TraducteurRobNeuf/blob/main/overview.gif)
+
 ## Project structure
 
 ```bash
