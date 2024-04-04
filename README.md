@@ -33,7 +33,9 @@ with user IDs hashed using SHA256 to ensure they cannot be retrieved again.
 
 ## Overview
 
-![](https://github.com/GeorgeVictorov/TraducteurRobNeuf/blob/main/overview.gif)
+![overview 12 09 12](https://github.com/GeorgeVictorov/TraducteurRobNeuf/assets/120365126/0d9ed058-6a00-45a1-811d-588e9df0d550)
+
+<img src="[https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif](https://github.com/GeorgeVictorov/TraducteurRobNeuf/assets/120365126/0d9ed058-6a00-45a1-811d-588e9df0d550)" width="40" height="40" />
 
 ## Project structure
 
