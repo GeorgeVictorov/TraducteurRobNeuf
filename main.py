@@ -1,13 +1,15 @@
 import asyncio
 import logging
 import signal
+
 from aiogram import Bot, Dispatcher
+
 from config_data.config import load_config
-from handlers import user_handlers, other_handlers
+from database.db import Database
+from handlers import other_handlers, user_handlers
 from keyboards.main_menu import set_main_menu
 from logger.logger import setup_logger
 from services.services import sigint_handler, sigterm_handler
-from database.db import Database
 
 
 async def init_db():

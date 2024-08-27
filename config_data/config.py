@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from environs import Env
 
 
@@ -22,7 +23,7 @@ class Config:
     db: DatabaseConfig
 
 
-def load_config(path: str = 'env/.env') -> Config:
+def load_config(path: str = '/env/.env') -> Config:
     env: Env = Env()
     env.read_env(path)
 

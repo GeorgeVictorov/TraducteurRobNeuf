@@ -1,6 +1,8 @@
 import logging
+
 import psycopg
-from cachetools import cached, TTLCache
+from cachetools import TTLCache, cached
+
 from database.db import Database
 
 USERS_CONFIG = 'users_config'
@@ -10,7 +12,6 @@ cache = TTLCache(maxsize=100, ttl=300)
 
 def update_cached_users_config():
     cache.clear()
-    logging.info("Cached users config cleared.")
 
 
 @cached(cache=cache)
@@ -25,7 +26,6 @@ def load_users_config():
             for row in rows:
                 hashed_user_id, src_lang, dest_lang = row
                 users_config[str(hashed_user_id)] = {'src_lang': src_lang, 'dest_lang': dest_lang}
-        logging.info("Users config loaded successfully.")
     except psycopg.Error as e:
         logging.error(f"Error loading users config: {e}.")
     return users_config
@@ -45,7 +45,6 @@ def save_users_config(users_config):
                     on conflict (hashed_user_id) do update
                     set src_lang = excluded.src_lang, dest_lang = excluded.dest_lang
                             ''', (hashed_user_id, src_lang, dest_lang))
-            logging.info("Users config saved successfully.")
             update_cached_users_config()
         except psycopg.Error as e:
             logging.error(f"Error saving users config: {e}.")

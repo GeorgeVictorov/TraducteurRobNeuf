@@ -1,5 +1,5 @@
-from aiogram import Router, F
-from aiogram.types import Message, ContentType
+from aiogram import F, Router
+from aiogram.types import ContentType, Message
 
 router = Router()
 

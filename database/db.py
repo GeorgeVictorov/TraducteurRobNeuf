@@ -1,5 +1,7 @@
-import psycopg
 import logging
+
+import psycopg
+
 from config_data.config import load_config
 
 USERS_CONFIG = 'users_config'
@@ -38,7 +40,6 @@ class Database:
 
     def get_connection(self):
         if self.db_connection is not None:
-            logging.info("Reusing existing database connection...")
             return self.db_connection
         else:
             self._initialize_connection()
@@ -72,6 +73,8 @@ class Database:
             try:
                 self.db_connection.close()
                 logging.info("Database connection closed.")
+                self.db_connection = None
+                self._initialized = False
             except Exception as e:
                 logging.error(f"Error closing database connection: {e}.")
         else:

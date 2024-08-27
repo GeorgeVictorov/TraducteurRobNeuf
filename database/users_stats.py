@@ -1,5 +1,7 @@
 import logging
+
 import psycopg
+
 from database.db import Database
 
 STATS = 'stats_data'
@@ -18,7 +20,6 @@ def save_stats(users_config):
                     values (%s, %s, %s, current_timestamp)
                     ''', (hashed_user_id, src_lang, dest_lang))
             conn.commit()
-        logging.info("Stats saved successfully.")
     except psycopg.Error as e:
         logging.error(f"Error saving stats: {e}.")
         conn.rollback()
