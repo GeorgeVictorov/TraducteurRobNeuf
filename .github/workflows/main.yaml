@@ -80,7 +80,7 @@ jobs:
             cd trn
             docker-compose pull
             docker-compose down
-            docker-compose up -d
+            docker-compose --env-file env/.env up -d
           debug: true
 
 
