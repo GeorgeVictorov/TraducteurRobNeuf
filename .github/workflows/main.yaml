@@ -4,24 +4,22 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   tests:
     name: PEP8 check
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.12.4
+          python-version: 3.10.14
+          architecture: x64
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip 
-          pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Test with flake8
         run: |
@@ -32,65 +30,63 @@ jobs:
     runs-on: ubuntu-latest
     needs: tests
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
+    - name: Check out the repo
+      uses: actions/checkout@v3
 
-      - name: Set up Docker Build
-        uses: docker/setup-buildx-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-      - name: Login to Docker
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Login to Docker
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push to DockerHub
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: georgevictorov/trn_bot:latest
+    - name: Push to DockerHub
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: lacolle87/trn_bot:latest
 
   deploy:
     runs-on: ubuntu-latest
     needs:
       - build_and_push_to_docker_hub
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    - name: Checkout repo
+      uses: actions/checkout@v3
 
-      - name: Copy docker-compose.yml via ssh
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "docker-compose.yml"
-          target: "trn"
+    - name: Copy docker-compose.yml via ssh
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        source: "docker-compose.yml"
+        target: "trn"
 
-      - name: Executing remote ssh commands to deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            cd trn
-            docker-compose pull
-            docker-compose down
-            docker-compose --env-file env/.env up -d
-          debug: true
-
+    - name: Executing remote ssh commands to deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        script: |
+          cd trn
+          sudo docker compose -f docker-compose.yml pull
+          sudo docker compose -f docker-compose.yml down
+          sudo docker compose -f docker-compose.yml --env-file=./env/.env up -d
 
   send_message:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
-      - name: Send message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: Successfully deployed TRN bot!
+    - name: Send message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: Деплой успешно выполнен! (TRN)
