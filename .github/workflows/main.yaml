@@ -76,9 +76,9 @@ jobs:
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           cd trn
-          sudo docker compose -f docker-compose.yml pull
-          sudo docker compose -f docker-compose.yml down
-          sudo docker compose -f docker-compose.yml --env-file=./env/.env up -d
+          docker-compose pull
+          docker-compose down
+          docker-compose --env-file=./env/.env up -d
 
   send_message:
     runs-on: ubuntu-latest
