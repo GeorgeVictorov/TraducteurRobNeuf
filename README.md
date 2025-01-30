@@ -2,7 +2,7 @@
 
 «Neuf» - from French language may mean «nine» or «new» - it's up to you to decide.
 
-More than **300_000** translations already made. Try now!
+More than **400_000** translations already made. Try now!
 
 ## Introduction
 
